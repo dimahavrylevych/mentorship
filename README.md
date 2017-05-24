@@ -2,7 +2,6 @@
 ### part 1
 
 # Ad-hoc commands
-<<<<<<< HEAD
 * run **Shell command**
 ```shell
 $ ansible dev -b -m shell -a "date"
