@@ -1,0 +1,14 @@
+[web]
+web.mentorship ansible_host=192.168.61.3 #ansible_ssh_private_key_file=/home/vagrant/.ssh/id_rsa
+
+[db]
+db.mentorship ansible_host=192.168.61.4 #ansible_ssh_private_key_file=/home/vagrant/.ssh/db_id_rsa
+
+
+[servers:children]
+web
+db
+
+[servers:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_private_key_file=~/.ssh/insecured

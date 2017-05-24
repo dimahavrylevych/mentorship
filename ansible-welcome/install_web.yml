@@ -1,0 +1,32 @@
+---
+- hosts: web
+  vars:
+    test: test
+  become: yes
+  tasks:
+  - name: install packages
+    yum: name={{item}} state=installed
+    with_items:
+         - java-1.8.0-openjdk
+         - tomcat
+         - wget
+
+  - name: download WAR file
+    get_url:
+      url: https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war
+      dest: /var/lib/tomcat/webapps/ROOT.war
+
+  - name: config Tomcat
+    copy:
+      src: resources/server.xml
+      dest: /etc/tomcat/server.xml
+      owner: root
+      group: tomcat
+      mode: 0644
+      backup: yes
+
+  - name: init tomcat
+    service:
+      name: tomcat
+      state: started
+      enabled: yes

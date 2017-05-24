@@ -1,0 +1,15 @@
+- hosts: db
+  vars:
+    test: test
+  become: yes
+  tasks:
+  - name: Update apt
+    command: apt-get -y update
+
+  - name: install packages
+    apt: name={{item}} state=installed
+    with_items:
+         - mysql-server
+
+  - name: run mysql secure install
+    command: mysql_secure_installation && mysql_install_db
