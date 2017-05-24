@@ -4,6 +4,6 @@
 # Ad-hoc commands
 * run **date** shell command on **dev** group with **sudo**(-b)
 
-'''shell
+'''Shell
 $ ansible dev -b -m shell -a "date"
 '''
