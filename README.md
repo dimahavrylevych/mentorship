@@ -1,7 +1,7 @@
 # Ansible mentornship
 ### part 1
 
-# Ad-hoc commands
+## Ad-hoc commands
 * run **Shell command**
 ```shell
 $ ansible dev -b -m shell -a "date"
