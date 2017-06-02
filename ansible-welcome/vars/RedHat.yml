@@ -1,0 +1,5 @@
+java: java-1.8.0-openjdk
+tomcat: tomcat
+CATALINA_WEBAPPS: /var/lib/tomcat/webapps/
+CATALINA_HOME: /etc/tomcat/
+JAVA_HOME: /usr/lib/jvm/java-8-oracle/jre/bin/java

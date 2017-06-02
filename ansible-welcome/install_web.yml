@@ -1,32 +1,94 @@
 ---
-- hosts: web
+- hosts: dc2
+  vars_files:
+    - "vars/{{ ansible_os_family }}.yml"
+    - "vars/Generic.yml"
   vars:
-    test: test
+     tomcat_home: "{{ lookup('env','CATALINA_HOME') }}"
+     java_home: /usr/lib/jvm/java-8-oracle/jre/bin/java
   become: yes
+  environment:
+    JAVA_HOME: "{{java_home}}"
   tasks:
+
+  - name: add apt repo for java
+    apt_repository:
+      repo: ppa:webupd8team/java
+    when: ansible_os_family == "Debian"
+
+  - name: update cache Debian
+    apt:
+      update_cache: yes
+    when: ansible_os_family == "Debian"
+
+  - name: update cache RedHat
+    yum:
+      name: '*'
+    when: ansible_os_family == "RedHat"
+
   - name: install packages
-    yum: name={{item}} state=installed
+    package: name={{item}} state=installed
     with_items:
-         - java-1.8.0-openjdk
-         - tomcat
+         - "{{ java }}"
+         - "{{ tomcat }}"
          - wget
+
+  - name: clean artifact path
+    file:
+      state: absent
+      path: "{{ CATALINA_WEBAPPS }}"
+
+  - name: create webapps if exists
+    file:
+      path: "{{ CATALINA_WEBAPPS }}"
+      state: directory
 
   - name: download WAR file
     get_url:
-      url: https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war
-      dest: /var/lib/tomcat/webapps/ROOT.war
+      url: https://raw.githubusercontent.com/dimahavrylevych/mentorship/master/vagrant/sample.war
+      dest: "{{ CATALINA_WEBAPPS }}ROOT.war"
+      checksum: md5:3E11705A42AA79C06188B7009A12A938
 
   - name: config Tomcat
     copy:
       src: resources/server.xml
-      dest: /etc/tomcat/server.xml
-      owner: root
-      group: tomcat
+      dest: "{{ CATALINA_HOME }}server.xml"
+      owner: "{{ tomcat }}"
+      group: "{{ tomcat }}"
       mode: 0644
       backup: yes
+    notify:
+    - restart tomcat
 
-  - name: init tomcat
+  - meta: flush_handlers
+
+  - name: init tomcat on boot
     service:
-      name: tomcat
-      state: started
+      name: "{{ tomcat }}"
       enabled: yes
+    notify:
+    - tomcat running
+  - meta: flush_handlers
+
+  - name: add hostname
+    replace:
+      path: "{{ CATALINA_WEBAPPS }}ROOT/index.html"
+      regexp: '<h1>Sample "Hello, World" Application from </h1>'
+      replace: "<h1>Sample Hello, World Application from {{ inventory_hostname }}</h1>"
+      backup: yes
+
+  - uri:
+      url: "http://{{ ansible_eth0.ipv4.address }}:8080/"
+      return_content: yes
+      register: webpage
+
+  # - name: Fail if AWESOME is not in the page content
+  #   fail:
+  #     when: "'AWESOME' not in webpage.content"
+
+  handlers:
+   - name: restart tomcat
+     service: name="{{ tomcat }}" state=restarted
+     become: yes
+   - name: tomcat running
+     service: name="{{ tomcat }}" state=running
