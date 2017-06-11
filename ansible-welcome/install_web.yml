@@ -1,14 +1,11 @@
 ---
-- hosts: all
+- hosts: dc1
   vars_files:
     - "vars/{{ ansible_os_family }}.yml"
     - "vars/Generic.yml"
   vars:
      tomcat_home: "{{ lookup('env','CATALINA_HOME') }}"
-     java_home: /usr/lib/jvm/java-8-oracle/jre/bin/java
   become: yes
-  environment:
-    JAVA_HOME: "{{java_home}}"
   tasks:
 
   - name: add apt repo for java
@@ -36,18 +33,17 @@
   - name: clean artifact path
     file:
       state: absent
-      path: "{{ CATALINA_WEBAPPS }}"
+      path: "{{ CATALINA_WEBAPPS }}ROOT/"
 
-  - name: create webapps if exists
-    file:
-      path: "{{ CATALINA_WEBAPPS }}"
-      state: directory
 
   - name: download WAR file
     get_url:
       url: https://raw.githubusercontent.com/dimahavrylevych/mentorship/master/vagrant/sample.war
       dest: "{{ CATALINA_WEBAPPS }}ROOT.war"
       checksum: md5:3E11705A42AA79C06188B7009A12A938
+      force: yes
+      group: tomcat
+      owner: root
 
   - name: config Tomcat
     copy:
@@ -88,5 +84,5 @@
    - name: restart tomcat
      service: name="{{ tomcat }}" state=restarted
      become: yes
-   - name: tomcat running
-     service: name="{{ tomcat }}" state=running
+     environment:
+       JAVA_HOME: "{{ java_h }}"
