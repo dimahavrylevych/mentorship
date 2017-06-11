@@ -40,7 +40,7 @@
     get_url:
       url: https://raw.githubusercontent.com/dimahavrylevych/mentorship/master/vagrant/sample.war
       dest: "{{ CATALINA_WEBAPPS }}ROOT.war"
-      checksum: md5:3E11705A42AA79C06188B7009A12A938
+      checksum: md5:60227f2728e07242a78f2ac0fd74f5ca
       force: yes
       group: tomcat
       owner: root
@@ -63,13 +63,13 @@
       name: "{{ tomcat }}"
       enabled: yes
 
-
-  - name: add hostname
-    replace:
-      path: "{{ CATALINA_WEBAPPS }}ROOT/index.html"
-      regexp: '<h1>Sample "Hello, World" Application from </h1>'
-      replace: "<h1>Sample Hello, World Application from {{ inventory_hostname }}</h1>"
-      backup: yes
+  #
+  # - name: add hostname
+  #   replace:
+  #     path: "{{ CATALINA_WEBAPPS }}ROOT/index.html"
+  #     regexp: '<h1>Sample "Hello, World" Application from </h1>'
+  #     replace: "<h1>Sample Hello, World Application from {{ inventory_hostname }}</h1>"
+  #     backup: yes
 
   - uri:
       url: "http://{{ ansible_eth0.ipv4.address }}:8080/"
