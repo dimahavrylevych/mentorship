@@ -2,3 +2,4 @@ java: default-jdk
 tomcat: tomcat7
 CATALINA_WEBAPPS: /var/lib/tomcat7/webapps/
 CATALINA_HOME: /etc/tomcat7/
+java_h: /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/

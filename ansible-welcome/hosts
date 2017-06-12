@@ -1,16 +1,19 @@
 [dc1]
 web1.mentorship ansible_host=192.168.61.3
+#centos
 
 [dc2]
 web2.mentorship ansible_host=192.168.61.4
+#ubutnu
+
 
 [dc3]
 proxy.mentorship ansible_host=192.168.61.5
-
+#centos
 [servers:children]
 dc1
 dc2
 
-[servers:vars]
+[all:vars]
 ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/.ssh/insecured
