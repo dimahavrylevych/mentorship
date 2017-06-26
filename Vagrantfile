@@ -8,6 +8,7 @@ Vagrant.configure("2") do |config|
 	  master.vm.hostname = "master.mentorship"
 	  master.vm.provision "shell", path: "vagrant/bootstrap_master.sh"
     master.vm.synced_folder "ansible-welcome/", "/etc/ansible/"
+    master.vm.synced_folder "ansible-roles/", "/etc/ansible/roles"
     master.hostsupdater.aliases = ["master.mentorship"]
     master.vm.provision "file", source: "C:/Users/Dmytro_Havrylevych/.vagrant.d/insecure_private_key", destination: "/home/vagrant/.ssh/insecured"
     master.vm.provision "shell", inline: "sudo chmod 600 /home/vagrant/.ssh/insecured"

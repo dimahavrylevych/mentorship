@@ -1,0 +1,43 @@
+---
+- name: install packages
+  package: name={{item}} state=installed
+  with_items:
+       - "{{ java }}"
+       - "{{ tomcat }}"
+
+- name: config Tomcat
+  copy:
+   src: server.xml
+   dest: "{{ CATALINA_HOME }}server.xml"
+   owner: "{{ tomcat }}"
+   group: "{{ tomcat }}"
+   mode: 0644
+   backup: yes
+  notify:
+  - restart tomcat
+
+- name: download WAR file
+  get_url:
+   url: https://raw.githubusercontent.com/dimahavrylevych/mentorship/master/vagrant/sample.war
+   dest: "{{ CATALINA_WEBAPPS }}ROOT.war"
+   checksum: md5:60227f2728e07242a78f2ac0fd74f5ca
+   force: yes
+   group: "{{ tomcat }}"
+   owner: root
+   backup: yes
+   timeout: 20
+  notify:
+  - remove ROOT
+  - restart tomcat
+
+- meta: flush_handlers
+
+- uri:
+   url: "http://{{ ansible_eth1.ipv4.address }}:8080/"
+   status_code: 200
+   follow_redirects: all
+   register: webpage
+   until: result.status == 200
+   retries: 10
+   timeout: 120
+   delay: 1

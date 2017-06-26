@@ -1,0 +1,11 @@
+---
+- name: restart tomcat
+  service: name="{{ tomcat }}" state=restarted
+  become: yes
+  environment:
+    JAVA_HOME: "{{ java_h }}"
+
+- name: remove ROOT
+  command: rm -rf "{{ CATALINA_WEBAPPS }}/ROOT"
+  become: yes
+  when: ansible_os_family == "Debian"
