@@ -5,6 +5,9 @@
   with_items:
        - nginx
 
+- name: selinux open http
+  shell: setsebool -P httpd_can_network_connect 1
+
 - name: copy proxy config
   template:
    src: proxy.j2
@@ -29,3 +32,5 @@
    follow_redirects: all
    register: webpage
    timeout: 30
+   debug:
+    message: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"
