@@ -1,1 +1,2 @@
+---
 tomcat_home: "{{ lookup('env','CATALINA_HOME') }}"

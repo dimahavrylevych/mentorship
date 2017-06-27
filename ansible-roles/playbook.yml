@@ -1,6 +1,22 @@
 ---
-- hosts: dc1
+
+- name: generic
+  hosts: all
+  gather_facts: yes
+  become: yes
+  roles:
+    - common
+
+- name: webserver
+  hosts: servers
   gather_facts: yes
   become: yes
   roles:
     - webserver
+
+- name: proxy
+  hosts: dc3
+  gather_facts: yes
+  become: yes
+  roles:
+    - servers

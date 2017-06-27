@@ -1,6 +1,8 @@
 ---
+
 - name: Include OS vars
   include_vars: "{{ ansible_os_family }}.yml"
+
 - name: install packages
   package: name={{item}} state=installed
   with_items:
@@ -39,7 +41,7 @@
    status_code: 200
    follow_redirects: all
    register: webpage
-   until: result.status == 200
+   until: webpage.status == 200
    retries: 10
    timeout: 120
    delay: 1

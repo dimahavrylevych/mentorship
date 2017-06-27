@@ -68,7 +68,7 @@
       status_code: 200
       follow_redirects: all
       register: webpage
-      until: result.status == 200
+      until: webpage.status == 200
       retries: 10
       timeout: 120
       delay: 1
