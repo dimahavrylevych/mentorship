@@ -1,2 +1,8 @@
 ---
 # handlers file for proxy
+- name: restart nginx
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: nginx
+    enabled: True
