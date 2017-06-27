@@ -27,6 +27,16 @@
   notify:
   - restart nginx
 
+- name: copy htpasswd
+  copy:
+   src: .htpasswd
+   dest: /etc/nginx/.htpasswd
+   force: yes
+   mode: 0644
+   backup: yes
+  notify:
+  - restart nginx
+
 - uri:
    url: "http://{{ ansible_eth1.ipv4.address }}/"
    follow_redirects: all
