@@ -42,5 +42,6 @@
    follow_redirects: all
    register: webpage
    timeout: 30
+   user: zippy
    debug:
     message: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"

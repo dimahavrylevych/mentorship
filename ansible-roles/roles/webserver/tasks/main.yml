@@ -18,6 +18,7 @@
    mode: 0644
    backup: yes
   notify:
+  - start tomcat
   - restart tomcat
 
 - name: download WAR file
@@ -32,16 +33,18 @@
    timeout: 20
   notify:
   - remove ROOT
+  - start tomcat
   - restart tomcat
 
 - meta: flush_handlers
 
-- uri:
+- name: wait for Tomcat start
+  uri:
    url: "http://{{ ansible_eth1.ipv4.address }}:8080/"
    status_code: 200
    follow_redirects: all
-   register: webpage
-   until: webpage.status == 200
-   retries: 10
    timeout: 120
-   delay: 1
+  register: webpage
+  until: webpage.status == 200
+  retries: 10
+  delay: 10
