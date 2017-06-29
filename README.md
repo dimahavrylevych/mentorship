@@ -17,3 +17,10 @@ $ ansible dev -b -m yum -a "name=mc state=present"
 ```shell
 $ ansible dev -b -m yum -a "name=tomcat state=started enabled=yes"
 ```
+
+
+
+* run playbook with **Roles**
+```shell
+[vagrant@master /etc/ansible/roles]$ ansible-playbook playbook.yml --ask-vault-pass
+```
