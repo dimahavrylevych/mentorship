@@ -43,5 +43,6 @@
    register: webpage
    timeout: 30
    user: zippy
+   password:
    debug:
     message: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"
