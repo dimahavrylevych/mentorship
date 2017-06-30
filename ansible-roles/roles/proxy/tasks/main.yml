@@ -32,8 +32,8 @@
   - restart nginx
 
 - name: copy htpasswd
-  copy:
-   src: .htpasswd
+  template:
+   src: htpasswd.j2
    dest: /etc/nginx/.htpasswd
    force: yes
    mode: 0644
