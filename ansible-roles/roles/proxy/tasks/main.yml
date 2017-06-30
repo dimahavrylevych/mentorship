@@ -41,6 +41,11 @@
   notify:
   - restart nginx
 
+- name: ensure nginx running
+  service:
+    name: nginx
+    state: started
+
 - uri:
    url: "http://{{ ansible_eth1.ipv4.address }}/"
    follow_redirects: all
@@ -48,5 +53,6 @@
    timeout: 30
    user: zippy
    password: "{{ proxy_password }}"
-   debug:
-    message: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"
+
+- debug:
+    msg: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"
