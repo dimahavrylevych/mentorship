@@ -47,7 +47,7 @@
     state: started
 
 - uri:
-   url: "http://{{ ansible_eth1.ipv4.address }}/"
+   url: "http://{{ ansible_host }}/"
    follow_redirects: all
    register: webpage
    timeout: 30
@@ -55,4 +55,4 @@
    password: "{{ proxy_password }}"
 
 - debug:
-    msg: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"
+    msg: "Proxy is available under http://{{ ansible_host }}/"
