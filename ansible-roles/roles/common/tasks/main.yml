@@ -6,17 +6,6 @@
    repo: ppa:webupd8team/java
   when: ansible_os_family == "Debian"
 
-- name: update cache Debian
-  apt:
-   update_cache: yes
-  when: ansible_os_family == "Debian"
-
-- name: update cache RedHat
-  yum:
-   name: '*'
-   state: latest
-  when: ansible_os_family == "RedHat"
-
 - name: install EPEL
   yum:
    name: 'epel-release'
