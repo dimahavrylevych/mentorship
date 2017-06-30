@@ -1,2 +1,3 @@
 .vagrant/
 hosts/.vagrant
+ansible-roles/vault.txt

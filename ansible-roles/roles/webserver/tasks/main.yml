@@ -1,5 +1,4 @@
 ---
-
 - name: Include OS vars
   include_vars: "{{ ansible_os_family }}.yml"
 
@@ -18,7 +17,6 @@
    mode: 0644
    backup: yes
   notify:
-  - start tomcat
   - restart tomcat
 
 - name: download WAR file
@@ -32,11 +30,14 @@
    backup: yes
    timeout: 20
   notify:
-  - remove ROOT
-  - start tomcat
   - restart tomcat
 
 - meta: flush_handlers
+
+- name: ensure tomcat running
+  service:
+    name: "{{ tomcat }}"
+    state: started
 
 - name: wait for Tomcat start
   uri:

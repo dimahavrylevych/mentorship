@@ -4,9 +4,13 @@
   package: name={{item}} state=installed
   with_items:
        - nginx
+       - libsemanage-python
 
 - name: selinux open http
-  shell: setsebool -P httpd_can_network_connect 1
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
 
 - name: copy proxy config
   template:
@@ -43,6 +47,6 @@
    register: webpage
    timeout: 30
    user: zippy
-   password:
- debug:
-  message: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"
+   password: "{{ proxy_password }}"
+   debug:
+    message: "Proxy is available under http://{{ ansible_eth1.ipv4.address }}/"

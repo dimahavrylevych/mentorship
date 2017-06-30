@@ -5,12 +5,6 @@
   environment:
     JAVA_HOME: "{{ java_h }}"
 
-- name: start tomcat
-  service: name="{{ tomcat }}" state=started
-  become: yes
-  environment:
-    JAVA_HOME: "{{ java_h }}"
-
 - name: remove ROOT
   command: rm -rf "{{ CATALINA_WEBAPPS }}/ROOT"
   become: yes
