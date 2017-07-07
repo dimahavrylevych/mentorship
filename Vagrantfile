@@ -15,4 +15,5 @@ Vagrant.configure("2") do |config|
     #master.vm.provision "file", source: "C:/Users/Dmytro_Havrylevych/.vagrant.d/boxes/mycentosbox/0/virtualbox/vagrant_private_key", destination: "~/.ssh/id_rsa"
     #master.vm.provision "file", source: "C:/Users/Dmytro_Havrylevych/mentorship/hosts/.vagrant/machines/db/virtualbox/private_key", destination: "~/.ssh/db_id_rsa"
   end
+
 end
